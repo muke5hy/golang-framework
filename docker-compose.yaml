@@ -2,18 +2,18 @@ version: "3.4"
 services:
   beego:
     container_name: beego
-    image: muke5hy/go-api:beego-1.0.0
+    image: muke5hy/api:beego-1.0.0
     build:
-      context: ./go-api-api/beego
+      context: ./api-api/beego
     ports:
       - 8080:80
     networks:
-      - go-api
+      - ats
   echo:
     container_name: echo
-    image: muke5hy/go-api:echo-1.0.0
+    image: muke5hy/api:echo-1.0.0
     build:
-      context: ./go-api-api/echo
+      context: ./api-api/echo
     environment:
       - "ENVIRONMENT=DEBUG"
       - "REDIS_HOST=redis-db"
@@ -22,12 +22,12 @@ services:
     ports:
       - 81:10010
     networks:
-      - go-api
+      - ats
   gin:
     container_name: gin
-    image: muke5hy/go-api:gin-1.0.0
+    image: muke5hy/api:gin-1.0.0
     build:
-      context: ./go-api-api/gin
+      context: ./api-api/gin
     environment:
       - "ENVIRONMENT=DEBUG"
       - "REDIS_HOST=redis-db"
@@ -36,12 +36,12 @@ services:
     ports:
       - 81:10010
     networks:
-      - go-api
+      - ats
   plain:
     container_name: plain
-    image: muke5hy/go-api:plain-1.0.0
+    image: muke5hy/api:plain-1.0.0
     build:
-      context: ./go-api-api/plain
+      context: ./api-api/plain
     environment:
       - "ENVIRONMENT=DEBUG"
       - "REDIS_HOST=redis-db"
@@ -50,10 +50,10 @@ services:
     ports:
       - 81:10010
     networks:
-      - go-api
+      - ats
   ui:
     container_name: ui
-    image: muke5hy/go-api:ui-1.0.0
+    image: muke5hy/api:ui-1.0.0
     build:
       context: ./ui
     environment:
@@ -64,23 +64,23 @@ services:
     ports:
       - 81:10010
     networks:
-      - go-api
+      - ats
   redis-db:
     container_name: redis-db
     image: redis:6.0-alpine
     command: ["redis-server", "--dir", "/tmp", "--appendonly", "yes"]
     volumes:
-      - ./go-api-api/redis-db/appendonly.aof:/tmp/appendonly.aof
+      - ./api-api/redis-db/appendonly.aof:/tmp/appendonly.aof
     networks:
-      - go-api
+      - ats
   jaeger:
     container_name: jaeger
     image: jaegertracing/all-in-one:latest
     networks:
-      - go-api
+      - ats
     ports:
       - 16686:16686
       - 14269:14269
 networks:
-  go-api:
-    name: go-api
+  ats:
+    name: ats
